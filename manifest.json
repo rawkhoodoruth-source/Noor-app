@@ -1,0 +1,17 @@
+{
+  "name": "Noor — Your Light on the Path",
+  "short_name": "Noor",
+  "description": "A Muslim women's spiritual companion — prayer, dhikr, learning & community.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#faf7f2",
+  "theme_color": "#faf7f2",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/PNG_transparency_demonstration_1.png/240px-PNG_transparency_demonstration_1.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

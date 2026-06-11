@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#faf7f2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Noor">
+<link rel="manifest" href="manifest.json">
 <title>Noor — Your Light on the Path</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -28,6 +33,24 @@ body {
   position:relative;
   color:#1a1612;
   box-shadow:0 30px 70px rgba(0,0,0,0.15);
+}
+
+/* On real phones — fill the full screen, no frame */
+@media (max-width:430px) {
+  body { padding:0; background:#faf7f2; align-items:stretch; }
+  .phone {
+    width:100%; border-radius:0;
+    box-shadow:none;
+    min-height:100dvh;
+    display:flex; flex-direction:column;
+  }
+  .screen { min-height:100dvh; }
+  .bottom-nav {
+    padding-bottom: max(30px, env(safe-area-inset-bottom));
+  }
+  .home-header { padding-top: max(50px, env(safe-area-inset-top)); }
+  .top-bar { padding-top: max(52px, env(safe-area-inset-top)); }
+  .profile-header { padding-top: max(70px, env(safe-area-inset-top)); }
 }
 
 /* ── SCREEN SYSTEM ── */
