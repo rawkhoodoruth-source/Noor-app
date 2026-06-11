@@ -35,22 +35,64 @@ body {
   box-shadow:0 30px 70px rgba(0,0,0,0.15);
 }
 
-/* On real phones — fill the full screen, no frame */
+/* ── DESKTOP NAV (hidden on mobile) ── */
+.desktop-nav {
+  display:none;
+  position:sticky; top:0; z-index:200;
+  background:#ede8de;
+  border-bottom:1px solid rgba(160,124,60,.18);
+  height:62px;
+  padding:0 32px;
+  align-items:center;
+  gap:6px;
+  flex-shrink:0;
+}
+.desktop-nav-brand {
+  font-family:'Amiri',serif; font-size:22px; color:var(--text);
+  letter-spacing:3px; text-transform:uppercase;
+  border:none; background:none; cursor:pointer;
+  margin-right:auto; padding:0;
+}
+.desktop-nav-brand span { color:var(--gold); }
+.desktop-nav-link {
+  border:none; background:none; cursor:pointer;
+  font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500;
+  color:var(--text-dim); padding:7px 14px; border-radius:20px;
+  transition:all .18s;
+}
+.desktop-nav-link:hover { background:rgba(160,124,60,.1); color:var(--text); }
+.desktop-nav-link.active { background:rgba(160,124,60,.14); color:var(--gold); font-weight:600; }
+
+/* ── DESKTOP RESPONSIVE (≥768px) ── */
+@media (min-width:768px) {
+  body { padding:0; display:block; background:#faf7f2; }
+  .phone { width:100%; border-radius:0; box-shadow:none; background:#faf7f2; }
+  .desktop-nav { display:flex; }
+  .bottom-nav { display:none !important; }
+  .screen { min-height:calc(100vh - 62px); }
+  .scroll-area {
+    padding-left: max(32px, calc((100% - 900px) / 2));
+    padding-right: max(32px, calc((100% - 900px) / 2));
+  }
+  .arch-bg { border-radius:0 0 40% 40% / 0 0 70px 70px; height:320px; }
+  .home-header { padding-top:52px; }
+  .top-bar { padding-top:48px; }
+  .profile-header { padding-top:60px; }
+  .quick-grid { grid-template-columns:repeat(4,1fr); }
+  .names-grid { grid-template-columns:repeat(4,1fr); }
+  .stats-row { max-width:420px; }
+  .prayer-card { margin:18px 0 0; }
+}
+
+/* ── SMALL PHONES — fill the full screen, no frame ── */
 @media (max-width:430px) {
   body { padding:0; background:#faf7f2; align-items:stretch; }
-  .phone {
-    width:100%; border-radius:0;
-    box-shadow:none;
-    min-height:100dvh;
-    display:flex; flex-direction:column;
-  }
+  .phone { width:100%; border-radius:0; box-shadow:none; min-height:100dvh; display:flex; flex-direction:column; }
   .screen { min-height:100dvh; }
-  .bottom-nav {
-    padding-bottom: max(30px, env(safe-area-inset-bottom));
-  }
-  .home-header { padding-top: max(50px, env(safe-area-inset-top)); }
-  .top-bar { padding-top: max(52px, env(safe-area-inset-top)); }
-  .profile-header { padding-top: max(70px, env(safe-area-inset-top)); }
+  .bottom-nav { padding-bottom:max(30px, env(safe-area-inset-bottom)); }
+  .home-header { padding-top:max(50px, env(safe-area-inset-top)); }
+  .top-bar { padding-top:max(52px, env(safe-area-inset-top)); }
+  .profile-header { padding-top:max(70px, env(safe-area-inset-top)); }
 }
 
 /* ── SCREEN SYSTEM ── */
@@ -445,6 +487,16 @@ body {
 .step-meaning { font-size:.88rem; color:var(--text-dim); line-height:1.8; }
 .step-chevron { font-size:13px; color:rgba(160,124,60,.5); margin-left:auto; transition:transform .2s; flex-shrink:0; }
 .prayer-step.open .step-chevron { transform:rotate(180deg); }
+.listen-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  border:1px solid rgba(160,124,60,.3); border-radius:20px;
+  padding:6px 14px; font-size:12px; font-weight:600;
+  background:rgba(160,124,60,.08); color:var(--gold);
+  cursor:pointer; font-family:'DM Sans',sans-serif;
+  transition:all .2s; margin-top:10px;
+}
+.listen-btn:hover { background:rgba(160,124,60,.16); border-color:var(--gold); }
+.listen-btn.playing { background:rgba(220,38,38,.08); border-color:#dc2626; color:#dc2626; }
 
 /* ── WUDU SCREEN ── */
 .wudu-step { display:flex; gap:14px; padding:14px 0; border-bottom:1px solid rgba(160,124,60,.12); }
@@ -482,6 +534,18 @@ body {
 </head>
 <body>
 <div class="phone" id="app">
+
+<!-- ── DESKTOP TOP NAV (hidden on mobile) ── -->
+<nav class="desktop-nav" id="desktop-nav">
+  <button class="desktop-nav-brand" onclick="go('home')">N<span>oo</span>r</button>
+  <button class="desktop-nav-link active" id="dnav-home" onclick="go('home')">Home</button>
+  <button class="desktop-nav-link" id="dnav-prayer" onclick="go('prayer')">Prayer</button>
+  <button class="desktop-nav-link" id="dnav-wudu" onclick="go('wudu')">Wudu</button>
+  <button class="desktop-nav-link" id="dnav-dhikr" onclick="go('dhikr')">Dhikr</button>
+  <button class="desktop-nav-link" id="dnav-learn" onclick="go('learn')">Learn</button>
+  <button class="desktop-nav-link" id="dnav-events" onclick="go('events')">Events</button>
+  <button class="desktop-nav-link" id="dnav-profile" onclick="go('profile')">Journey</button>
+</nav>
 
 <!-- ═══════════════ HOME SCREEN ═══════════════ -->
 <div class="screen active" id="screen-home">
@@ -1667,6 +1731,107 @@ function selectDhikr(name, meaning, target, idx) {
   resetDhikr();
   document.getElementById('screen-dhikr').querySelector('.scroll-area').scrollTop = 0;
 }
+
+// ── DESKTOP NAV ACTIVE STATE ──
+const DNAV_MAP = {
+  home:'dnav-home', prayer:'dnav-prayer', wudu:'dnav-wudu',
+  dhikr:'dnav-dhikr', learn:'dnav-learn', events:'dnav-events',
+  poetry:'dnav-learn', names:'dnav-learn', journal:'dnav-profile', profile:'dnav-profile'
+};
+const _goOrig = go;
+function go(screen) {
+  _goOrig(screen);
+  document.querySelectorAll('.desktop-nav-link').forEach(b => b.classList.remove('active'));
+  const id = DNAV_MAP[screen];
+  if (id) document.getElementById(id)?.classList.add('active');
+}
+
+// ── AUDIO: male Arabic voice + Quran CDN ──
+const QURAN_AUDIO = 'https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy';
+const AUDIO_URLS = {
+  'al-fatiha': `${QURAN_AUDIO}/1.mp3`,
+  'additional-surah': `${QURAN_AUDIO}/112.mp3`,
+};
+const MALE_HINTS   = ['hamed','naayf','tarik','ali','male','رجل'];
+const FEMALE_HINTS = ['zariyah','laila','female','woman','amira','lana'];
+
+let _currentAudio = null;
+
+function stopAllAudio() {
+  window.speechSynthesis?.cancel();
+  if (_currentAudio) { _currentAudio.pause(); _currentAudio.currentTime = 0; _currentAudio = null; }
+  document.querySelectorAll('.listen-btn.playing').forEach(b => {
+    b.classList.remove('playing');
+    b.innerHTML = '🔊 Listen';
+  });
+}
+
+async function getBestArabicVoice() {
+  return new Promise(resolve => {
+    function pick() {
+      const voices = window.speechSynthesis.getVoices();
+      const ar = voices.filter(v => v.lang.startsWith('ar'));
+      if (!ar.length) { resolve(null); return; }
+      const male = ar.find(v => MALE_HINTS.some(h => v.name.toLowerCase().includes(h)));
+      if (male) { resolve(male); return; }
+      const notFemale = ar.find(v => !FEMALE_HINTS.some(h => v.name.toLowerCase().includes(h)));
+      resolve(notFemale || ar[0]);
+    }
+    const v = window.speechSynthesis?.getVoices();
+    if (v?.length) pick();
+    else {
+      window.speechSynthesis?.addEventListener('voiceschanged', pick, { once: true });
+      setTimeout(pick, 2000);
+    }
+  });
+}
+
+async function speakTTS(text, btn) {
+  if (!window.speechSynthesis || !text) return;
+  const voice = await getBestArabicVoice();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'ar-SA'; utter.rate = 0.68; utter.pitch = 1.0;
+  if (voice) utter.voice = voice;
+  utter.onend = () => { if (btn) { btn.classList.remove('playing'); btn.innerHTML = '🔊 Listen'; } };
+  utter.onerror = () => { if (btn) { btn.classList.remove('playing'); btn.innerHTML = '🔊 Listen'; } };
+  window.speechSynthesis.speak(utter);
+}
+
+async function playStepAudio(btn, arabic, audioUrl) {
+  const isPlaying = btn.classList.contains('playing');
+  stopAllAudio();
+  if (isPlaying) return;
+  btn.classList.add('playing');
+  btn.innerHTML = '⏹ Stop';
+  if (audioUrl) {
+    const audio = new Audio(audioUrl);
+    _currentAudio = audio;
+    try {
+      await audio.play();
+      audio.onended = () => { _currentAudio = null; btn.classList.remove('playing'); btn.innerHTML = '🔊 Listen'; };
+      audio.onerror = () => { _currentAudio = null; speakTTS(arabic, btn); };
+    } catch(e) { _currentAudio = null; speakTTS(arabic, btn); }
+  } else {
+    speakTTS(arabic, btn);
+  }
+}
+
+// ── AUTO-ATTACH LISTEN BUTTONS TO ALL PRAYER STEPS ──
+document.querySelectorAll('.step-detail').forEach(detail => {
+  const arabicEl = detail.querySelector('.tab-arabic');
+  if (!arabicEl) return;
+  const arabic = arabicEl.textContent.trim();
+  if (!arabic) return;
+  const titleEl = detail.closest('.prayer-step')?.querySelector('.step-title');
+  let audioUrl = null;
+  if (titleEl?.textContent.includes('Al-Fatiha')) audioUrl = `${QURAN_AUDIO}/1.mp3`;
+  if (titleEl?.textContent.includes('Additional Surah')) audioUrl = `${QURAN_AUDIO}/112.mp3`;
+  const btn = document.createElement('button');
+  btn.className = 'listen-btn';
+  btn.innerHTML = '🔊 Listen';
+  btn.onclick = e => { e.stopPropagation(); playStepAudio(btn, arabic, audioUrl); };
+  detail.appendChild(btn);
+});
 
 // ── INIT ──
 loadPrayerTimes();
