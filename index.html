@@ -428,6 +428,37 @@ body {
 .milestone-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px;}
 .milestone-sub{font-size:11px;color:var(--text-dim);}
 
+/* ── EXPANDED PRAYER STEP ── */
+.prayer-step { cursor:pointer; }
+.step-detail { display:none; margin-top:12px; }
+.prayer-step.open .step-detail { display:block; }
+.step-img { width:100%; border-radius:12px; object-fit:cover; max-height:190px; background:#e4dfd5; display:block; margin-bottom:10px; }
+.step-img-dots { display:flex; gap:5px; justify-content:center; margin-bottom:10px; }
+.step-img-dot { width:7px; height:7px; border-radius:50%; background:rgba(160,124,60,.2); border:none; cursor:pointer; padding:0; transition:background .2s; }
+.step-img-dot.active { background:var(--gold); width:18px; border-radius:4px; }
+.step-tabs { display:inline-flex; background:rgba(160,124,60,.1); border-radius:20px; padding:3px; gap:2px; margin-bottom:10px; }
+.step-tab { border:none; border-radius:16px; padding:5px 12px; font-size:11px; font-weight:600; letter-spacing:.5px; cursor:pointer; background:transparent; color:var(--text-dim); font-family:'DM Sans',sans-serif; transition:all .18s; }
+.step-tab.active { background:var(--gold); color:#fff; box-shadow:0 2px 6px rgba(160,124,60,.35); }
+.step-content-box { background:rgba(160,124,60,.06); border:1px solid rgba(160,124,60,.15); border-radius:10px; padding:12px; min-height:52px; }
+.step-arabic-text { font-family:'Amiri',serif; font-size:1.45rem; color:var(--gold); direction:rtl; line-height:2; text-align:right; }
+.step-translit { font-size:.9rem; color:var(--text); line-height:1.8; font-style:italic; }
+.step-meaning { font-size:.88rem; color:var(--text-dim); line-height:1.8; }
+.step-chevron { font-size:13px; color:rgba(160,124,60,.5); margin-left:auto; transition:transform .2s; flex-shrink:0; }
+.prayer-step.open .step-chevron { transform:rotate(180deg); }
+
+/* ── WUDU SCREEN ── */
+.wudu-step { display:flex; gap:14px; padding:14px 0; border-bottom:1px solid rgba(160,124,60,.12); }
+.wudu-step:last-child { border-bottom:none; }
+.wudu-num { width:34px; height:34px; border-radius:50%; background:rgba(160,124,60,.1); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; color:var(--gold); flex-shrink:0; margin-top:2px; }
+.wudu-body { flex:1; }
+.wudu-title { font-size:14px; font-weight:500; color:var(--text); margin-bottom:3px; }
+.wudu-arabic { font-family:'Amiri',serif; font-size:18px; color:var(--gold); direction:rtl; margin-bottom:3px; }
+.wudu-desc { font-size:12px; color:var(--text-dim); line-height:1.6; }
+.wudu-badge { display:inline-block; font-size:10px; letter-spacing:1px; text-transform:uppercase; background:rgba(160,124,60,.1); color:rgba(140,108,48,.8); border-radius:6px; padding:2px 8px; margin-top:4px; }
+
+/* ── PRAYER TIME LIVE ── */
+.pt-loading { font-size:12px; color:var(--text-dim); text-align:center; padding:8px 0; }
+
 /* ── JOURNAL SCREEN ── */
 .journal-entry{
   background:#ede8de;border:1px solid rgba(160,124,60,.2);
@@ -546,43 +577,353 @@ body {
         <div class="verse-source">Surah Al-Ankabut · 29:45</div>
       </div>
       <div class="sec-lbl">Before you begin</div>
-      <div class="prayer-step">
-        <div class="step-num done"><i class="ti ti-check" aria-hidden="true" style="font-size:13px"></i></div>
-        <div class="step-body"><div class="step-title">Make wudu</div><div class="step-trans">Ritual purification with water</div><div class="step-note">Wash hands, mouth, nose, face, arms, head, ears, feet</div></div>
+      <div class="prayer-step" onclick="toggleStep(this)">
+        <div class="step-num done"><i class="ti ti-check" style="font-size:13px"></i></div>
+        <div class="step-body">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div><div class="step-title">Make wudu</div><div class="step-trans">Ritual purification with water</div></div>
+            <i class="ti ti-chevron-down step-chevron"></i>
+          </div>
+          <div class="step-detail">
+            <div class="step-note" style="margin-bottom:8px">Wash hands · rinse mouth · rinse nose · wash face · wash arms · wipe head · wipe ears · wash feet — each 3×</div>
+            <button onclick="event.stopPropagation();go('wudu')" style="border:1px solid var(--gold);border-radius:10px;padding:7px 14px;background:rgba(160,124,60,.08);color:var(--gold);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">See full wudu guide →</button>
+          </div>
+        </div>
       </div>
-      <div class="prayer-step">
-        <div class="step-num done"><i class="ti ti-check" aria-hidden="true" style="font-size:13px"></i></div>
-        <div class="step-body"><div class="step-title">Face the Qibla</div><div class="step-trans">Direction of Mecca</div><div class="step-note">Paris → roughly south-east (121°)</div></div>
+      <div class="prayer-step" onclick="toggleStep(this)">
+        <div class="step-num done"><i class="ti ti-check" style="font-size:13px"></i></div>
+        <div class="step-body">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div><div class="step-title">Face the Qibla</div><div class="step-trans">Direction of Mecca</div></div>
+            <i class="ti ti-chevron-down step-chevron"></i>
+          </div>
+          <div class="step-detail">
+            <div class="step-note">Use a compass or Qibla app. Stand with your entire body facing Mecca — not just your face.</div>
+          </div>
+        </div>
       </div>
-      <div class="sec-lbl">The prayer steps</div>
-      <div class="prayer-step">
+
+      <div class="sec-lbl">The prayer — step by step</div>
+      <div class="sec-lbl" style="color:rgba(140,108,48,.45);margin-top:-8px;margin-bottom:12px;font-size:9px">Tap any step to expand ↓</div>
+
+      <!-- Step 1: Niyyah -->
+      <div class="prayer-step" onclick="toggleStep(this)">
         <div class="step-num">1</div>
-        <div class="step-body"><div class="step-title">Niyyah — Intention</div><div class="step-trans">Make your intention in your heart</div><div class="step-note">No need to say it aloud</div></div>
+        <div class="step-body">
+          <div style="display:flex;align-items:center">
+            <div style="flex:1"><div class="step-title">Intention (Niyyah)</div><div class="step-trans">Make intention in your heart</div></div>
+            <i class="ti ti-chevron-down step-chevron"></i>
+          </div>
+          <div class="step-detail">
+            <img class="step-img" src="https://www.mymasjid.ca/wp-content/uploads/2017/03/say-allahu-akbar-to-start-salah.jpg" alt="Niyyah">
+            <div class="step-note">No verbal recitation is required. Simply intend in your heart which prayer you are performing. Face the Qibla, stand upright.</div>
+          </div>
+        </div>
       </div>
-      <div class="prayer-step">
+
+      <!-- Step 2: Takbir -->
+      <div class="prayer-step" onclick="toggleStep(this)">
         <div class="step-num">2</div>
-        <div class="step-body"><div class="step-title">Takbiratul Ihram</div><div class="step-arabic">اللَّهُ أَكْبَرُ</div><div class="step-trans">Allahu Akbar — God is the Greatest</div><div class="step-note">Raise both hands to ear level, palms forward</div></div>
+        <div class="step-body">
+          <div style="display:flex;align-items:center">
+            <div style="flex:1"><div class="step-title">Opening Takbir</div><div class="step-arabic">اللَّهُ أَكْبَرُ</div></div>
+            <i class="ti ti-chevron-down step-chevron"></i>
+          </div>
+          <div class="step-detail">
+            <img class="step-img" id="img-takbir" src="https://www.mymasjid.ca/wp-content/uploads/2017/03/say-allahu-akbar-to-start-salah.jpg" alt="Takbir">
+            <div class="step-img-dots"><button class="step-img-dot active" onclick="event.stopPropagation();swapImg('img-takbir',this,'https://www.mymasjid.ca/wp-content/uploads/2017/03/say-allahu-akbar-to-start-salah.jpg')"></button><button class="step-img-dot" onclick="event.stopPropagation();swapImg('img-takbir',this,'https://www.mymasjid.ca/wp-content/uploads/2017/03/say-allahu-akbar-to-start-salah-2.jpg')"></button></div>
+            <div class="step-tabs">
+              <button class="step-tab active" onclick="event.stopPropagation();showTab(this,'arabic')">Arabic</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'pronun')">Pronunciation</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'meaning')">Meaning</button>
+            </div>
+            <div class="step-content-box">
+              <div class="tab-arabic step-arabic-text">اللَّهُ أَكْبَرُ</div>
+              <div class="tab-pronun step-translit" style="display:none">Allahu Akbar</div>
+              <div class="tab-meaning step-meaning" style="display:none">Allah is the Greatest</div>
+            </div>
+            <div class="step-note" style="margin-top:8px">Raise both hands to earlobe level, palms facing forward. This officially begins the prayer — you cannot speak or move freely after this.</div>
+          </div>
+        </div>
       </div>
-      <div class="prayer-step">
+
+      <!-- Step 3: Thana -->
+      <div class="prayer-step" onclick="toggleStep(this)">
         <div class="step-num">3</div>
-        <div class="step-body"><div class="step-title">Qiyam — Standing</div><div class="step-arabic">سُبْحَانَكَ اللَّهُمَّ</div><div class="step-trans">Subhanakal-lahumma — Opening supplication</div><div class="step-note">Then recite Al-Fatiha and another surah</div></div>
+        <div class="step-body">
+          <div style="display:flex;align-items:center">
+            <div style="flex:1"><div class="step-title">Opening Supplication (Thana)</div><div class="step-arabic" style="font-size:14px">سُبْحَانَكَ اللَّهُمَّ…</div></div>
+            <i class="ti ti-chevron-down step-chevron"></i>
+          </div>
+          <div class="step-detail">
+            <img class="step-img" src="https://www.mymasjid.ca/wp-content/uploads/2017/03/standing-for-salah-looking-at-ground.jpg" alt="Standing">
+            <div class="step-tabs">
+              <button class="step-tab active" onclick="event.stopPropagation();showTab(this,'arabic')">Arabic</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'pronun')">Pronunciation</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'meaning')">Meaning</button>
+            </div>
+            <div class="step-content-box">
+              <div class="tab-arabic step-arabic-text">سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ وَتَبَارَكَ اسْمُكَ وَتَعَالَى جَدُّكَ وَلَا إِلَهَ غَيْرُكَ</div>
+              <div class="tab-pronun step-translit" style="display:none">Subhanakal-lahumma wa bihamdika wa tabarakasmuka wa ta'ala jadduka wa la ilaha ghayruk</div>
+              <div class="tab-meaning step-meaning" style="display:none">Glory be to You, O Allah, and all praise is for You. Blessed is Your name, exalted is Your majesty, and there is no god but You.</div>
+            </div>
+            <div class="step-note" style="margin-top:8px">Fold right hand over left on your chest. Recite quietly. Eyes looking at the place of prostration.</div>
+          </div>
+        </div>
       </div>
-      <div class="prayer-step">
+
+      <!-- Step 4: Al-Fatiha -->
+      <div class="prayer-step" onclick="toggleStep(this)">
         <div class="step-num">4</div>
-        <div class="step-body"><div class="step-title">Ruku — Bowing</div><div class="step-arabic">سُبْحَانَ رَبِّيَ الْعَظِيمِ</div><div class="step-trans">Subhana rabbiyal azeem — 3 times</div><div class="step-note">Back parallel to ground, hands on knees</div></div>
+        <div class="step-body">
+          <div style="display:flex;align-items:center">
+            <div style="flex:1"><div class="step-title">Surah Al-Fatiha</div><div class="step-trans">The Opening — recited in every rakah</div></div>
+            <i class="ti ti-chevron-down step-chevron"></i>
+          </div>
+          <div class="step-detail">
+            <img class="step-img" src="https://www.mymasjid.ca/wp-content/uploads/2017/03/standing-in-salah-recite-surah-fatihah.jpg" alt="Al-Fatiha">
+            <div class="step-tabs">
+              <button class="step-tab active" onclick="event.stopPropagation();showTab(this,'arabic')">Arabic</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'pronun')">Pronunciation</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'meaning')">Meaning</button>
+            </div>
+            <div class="step-content-box">
+              <div class="tab-arabic step-arabic-text" style="font-size:1.25rem;line-height:2.2">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ ۝ الرَّحْمَٰنِ الرَّحِيمِ ۝ مَالِكِ يَوْمِ الدِّينِ ۝ إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ ۝ اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ ۝ صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ</div>
+              <div class="tab-pronun step-translit" style="display:none">Bismillahir-rahmanir-rahim · Alhamdu lillahi rabbil-'alamin · Ar-rahmanir-rahim · Maliki yawmid-din · Iyyaka na'budu wa iyyaka nasta'in · Ihdinas-siratal-mustaqim · Siratal-ladhina an'amta 'alayhim ghayril-maghdubi 'alayhim wa lad-dallin</div>
+              <div class="tab-meaning step-meaning" style="display:none">In the name of Allah, the Most Gracious, the Most Merciful · All praise is for Allah, Lord of all worlds · The Most Gracious, the Most Merciful · Master of the Day of Judgement · You alone we worship, and You alone we ask for help · Guide us to the straight path · The path of those You have blessed, not those who have evoked anger, nor those who are astray</div>
+            </div>
+            <div class="step-note" style="margin-top:8px">Say "Ameen" softly at the end. Then recite any short surah (e.g. Al-Ikhlas below). This is done in the first 2 rakaat.</div>
+          </div>
+        </div>
       </div>
-      <div class="prayer-step">
+
+      <!-- Step 5: Additional Surah -->
+      <div class="prayer-step" onclick="toggleStep(this)">
         <div class="step-num">5</div>
-        <div class="step-body"><div class="step-title">Sujud — Prostration</div><div class="step-arabic">سُبْحَانَ رَبِّيَ الْأَعْلَى</div><div class="step-trans">Subhana rabbiyal a'la — 3 times</div><div class="step-note">7 body parts touch the ground</div></div>
+        <div class="step-body">
+          <div style="display:flex;align-items:center">
+            <div style="flex:1"><div class="step-title">Additional Surah</div><div class="step-trans">Recite after Al-Fatiha (first 2 rakaat)</div></div>
+            <i class="ti ti-chevron-down step-chevron"></i>
+          </div>
+          <div class="step-detail">
+            <div class="step-note" style="margin-bottom:8px">Surah Al-Ikhlas is the most common for beginners — short and deeply meaningful.</div>
+            <div class="step-tabs">
+              <button class="step-tab active" onclick="event.stopPropagation();showTab(this,'arabic')">Arabic</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'pronun')">Pronunciation</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'meaning')">Meaning</button>
+            </div>
+            <div class="step-content-box">
+              <div class="tab-arabic step-arabic-text" style="font-size:1.25rem;line-height:2.2">قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ</div>
+              <div class="tab-pronun step-translit" style="display:none">Qul huwal-lahu ahad · Allahus-samad · Lam yalid wa lam yulad · Wa lam yakun lahu kufuwan ahad</div>
+              <div class="tab-meaning step-meaning" style="display:none">Say: He is Allah, the One · Allah, the Eternal Refuge · He neither begets nor was born · Nor is there to Him any equivalent</div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="prayer-step">
+
+      <!-- Step 6: Ruku -->
+      <div class="prayer-step" onclick="toggleStep(this)">
         <div class="step-num">6</div>
-        <div class="step-body"><div class="step-title">Tashahhud — Sitting</div><div class="step-arabic">التَّحِيَّاتُ لِلَّهِ</div><div class="step-trans">At-tahiyyatu lillah — testimony of faith</div></div>
+        <div class="step-body">
+          <div style="display:flex;align-items:center">
+            <div style="flex:1"><div class="step-title">Bowing (Ruku)</div><div class="step-arabic">سُبْحَانَ رَبِّيَ الْعَظِيمِ</div></div>
+            <i class="ti ti-chevron-down step-chevron"></i>
+          </div>
+          <div class="step-detail">
+            <img class="step-img" id="img-ruku" src="https://www.mymasjid.ca/wp-content/uploads/2017/03/make-ruku-prostration.jpg" alt="Ruku">
+            <div class="step-img-dots"><button class="step-img-dot active" onclick="event.stopPropagation();swapImg('img-ruku',this,'https://www.mymasjid.ca/wp-content/uploads/2017/03/make-ruku-prostration.jpg')"></button><button class="step-img-dot" onclick="event.stopPropagation();swapImg('img-ruku',this,'https://www.mymasjid.ca/wp-content/uploads/2017/03/how-to-make-ruku-bowing-down.jpg')"></button></div>
+            <div class="step-tabs">
+              <button class="step-tab active" onclick="event.stopPropagation();showTab(this,'arabic')">Arabic</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'pronun')">Pronunciation</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'meaning')">Meaning</button>
+            </div>
+            <div class="step-content-box">
+              <div class="tab-arabic step-arabic-text">سُبْحَانَ رَبِّيَ الْعَظِيمِ</div>
+              <div class="tab-pronun step-translit" style="display:none">Subhana rabbiyal-'azim</div>
+              <div class="tab-meaning step-meaning" style="display:none">Glory be to my Lord, the Most Great</div>
+            </div>
+            <div class="step-note" style="margin-top:8px">Say Allahu Akbar as you bow. Back parallel to ground, hands gripping knees. Recite 3 times minimum.</div>
+          </div>
+        </div>
       </div>
-      <div class="prayer-step">
+
+      <!-- Step 7: Rising from Ruku -->
+      <div class="prayer-step" onclick="toggleStep(this)">
         <div class="step-num">7</div>
-        <div class="step-body"><div class="step-title">Tasleem — Ending</div><div class="step-arabic">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ</div><div class="step-trans">Peace and mercy of God be upon you</div><div class="step-note">Turn head right, then left</div></div>
+        <div class="step-body">
+          <div style="display:flex;align-items:center">
+            <div style="flex:1"><div class="step-title">Rising from Ruku</div><div class="step-arabic" style="font-size:14px">سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ</div></div>
+            <i class="ti ti-chevron-down step-chevron"></i>
+          </div>
+          <div class="step-detail">
+            <div class="step-tabs">
+              <button class="step-tab active" onclick="event.stopPropagation();showTab(this,'arabic')">Arabic</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'pronun')">Pronunciation</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'meaning')">Meaning</button>
+            </div>
+            <div class="step-content-box">
+              <div class="tab-arabic step-arabic-text" style="font-size:1.1rem">سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ ۝ رَبَّنَا وَلَكَ الْحَمْدُ</div>
+              <div class="tab-pronun step-translit" style="display:none">Sami'allahu liman hamidah · Rabbana wa lakal-hamd</div>
+              <div class="tab-meaning step-meaning" style="display:none">Allah hears whoever praises Him · Our Lord, all praise is Yours</div>
+            </div>
+            <div class="step-note" style="margin-top:8px">Say "Sami'allahu liman hamidah" as you rise. Once fully upright, say "Rabbana wa lakal-hamd." Stand briefly in stillness.</div>
+          </div>
+        </div>
       </div>
+
+      <!-- Step 8: First Sujud -->
+      <div class="prayer-step" onclick="toggleStep(this)">
+        <div class="step-num">8</div>
+        <div class="step-body">
+          <div style="display:flex;align-items:center">
+            <div style="flex:1"><div class="step-title">First Prostration (Sujud)</div><div class="step-arabic">سُبْحَانَ رَبِّيَ الْأَعْلَى</div></div>
+            <i class="ti ti-chevron-down step-chevron"></i>
+          </div>
+          <div class="step-detail">
+            <img class="step-img" id="img-sujud1" src="https://www.mymasjid.ca/wp-content/uploads/2017/03/making-sujud-in-salah-2.jpg" alt="Sujud">
+            <div class="step-img-dots"><button class="step-img-dot active" onclick="event.stopPropagation();swapImg('img-sujud1',this,'https://www.mymasjid.ca/wp-content/uploads/2017/03/making-sujud-in-salah-2.jpg')"></button><button class="step-img-dot" onclick="event.stopPropagation();swapImg('img-sujud1',this,'https://www.mymasjid.ca/wp-content/uploads/2017/03/making-sujud-in-salah.jpg')"></button></div>
+            <div class="step-tabs">
+              <button class="step-tab active" onclick="event.stopPropagation();showTab(this,'arabic')">Arabic</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'pronun')">Pronunciation</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'meaning')">Meaning</button>
+            </div>
+            <div class="step-content-box">
+              <div class="tab-arabic step-arabic-text">سُبْحَانَ رَبِّيَ الْأَعْلَى</div>
+              <div class="tab-pronun step-translit" style="display:none">Subhana rabbiyal-a'la</div>
+              <div class="tab-meaning step-meaning" style="display:none">Glory be to my Lord, the Most High</div>
+            </div>
+            <div class="step-note" style="margin-top:8px">7 body parts must touch the ground: forehead + nose, both palms, both knees, both toes. Fingers pointing toward Qibla. Recite 3 times.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 9: Jalsa -->
+      <div class="prayer-step" onclick="toggleStep(this)">
+        <div class="step-num">9</div>
+        <div class="step-body">
+          <div style="display:flex;align-items:center">
+            <div style="flex:1"><div class="step-title">Sitting between Prostrations</div><div class="step-arabic" style="font-size:14px">رَبِّ اغْفِرْ لِي</div></div>
+            <i class="ti ti-chevron-down step-chevron"></i>
+          </div>
+          <div class="step-detail">
+            <img class="step-img" src="https://www.mymasjid.ca/wp-content/uploads/2017/03/sitting-between-sujud.jpg" alt="Jalsa">
+            <div class="step-tabs">
+              <button class="step-tab active" onclick="event.stopPropagation();showTab(this,'arabic')">Arabic</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'pronun')">Pronunciation</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'meaning')">Meaning</button>
+            </div>
+            <div class="step-content-box">
+              <div class="tab-arabic step-arabic-text">رَبِّ اغْفِرْ لِي</div>
+              <div class="tab-pronun step-translit" style="display:none">Rabbigh-firli</div>
+              <div class="tab-meaning step-meaning" style="display:none">O my Lord, forgive me</div>
+            </div>
+            <div class="step-note" style="margin-top:8px">Rise from sujud saying Allahu Akbar. Sit briefly on your left foot. Recite once, then go into the second prostration.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 10: Second Sujud -->
+      <div class="prayer-step" onclick="toggleStep(this)">
+        <div class="step-num">10</div>
+        <div class="step-body">
+          <div style="display:flex;align-items:center">
+            <div style="flex:1"><div class="step-title">Second Prostration (Sujud)</div><div class="step-arabic">سُبْحَانَ رَبِّيَ الْأَعْلَى</div></div>
+            <i class="ti ti-chevron-down step-chevron"></i>
+          </div>
+          <div class="step-detail">
+            <img class="step-img" src="https://www.mymasjid.ca/wp-content/uploads/2017/03/making-sujud-in-salah-2.jpg" alt="Sujud 2">
+            <div class="step-tabs">
+              <button class="step-tab active" onclick="event.stopPropagation();showTab(this,'arabic')">Arabic</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'pronun')">Pronunciation</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'meaning')">Meaning</button>
+            </div>
+            <div class="step-content-box">
+              <div class="tab-arabic step-arabic-text">سُبْحَانَ رَبِّيَ الْأَعْلَى</div>
+              <div class="tab-pronun step-translit" style="display:none">Subhana rabbiyal-a'la</div>
+              <div class="tab-meaning step-meaning" style="display:none">Glory be to my Lord, the Most High</div>
+            </div>
+            <div class="step-note" style="margin-top:8px">Same as the first sujud. Recite 3 times. This completes one full rakah (unit of prayer).</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 11: Tashahhud -->
+      <div class="prayer-step" onclick="toggleStep(this)">
+        <div class="step-num">11</div>
+        <div class="step-body">
+          <div style="display:flex;align-items:center">
+            <div style="flex:1"><div class="step-title">Tashahhud (sitting)</div><div class="step-arabic" style="font-size:13px">التَّحِيَّاتُ لِلَّهِ…</div></div>
+            <i class="ti ti-chevron-down step-chevron"></i>
+          </div>
+          <div class="step-detail">
+            <img class="step-img" id="img-tash" src="https://www.mymasjid.ca/wp-content/uploads/2017/03/sitting-in-salah-and-tashahud.jpg" alt="Tashahhud">
+            <div class="step-img-dots"><button class="step-img-dot active" onclick="event.stopPropagation();swapImg('img-tash',this,'https://www.mymasjid.ca/wp-content/uploads/2017/03/sitting-in-salah-and-tashahud.jpg')"></button><button class="step-img-dot" onclick="event.stopPropagation();swapImg('img-tash',this,'https://www.mymasjid.ca/wp-content/uploads/2017/03/saying-tashahud-and-salah-an-nabi-prophet.jpg')"></button></div>
+            <div class="step-tabs">
+              <button class="step-tab active" onclick="event.stopPropagation();showTab(this,'arabic')">Arabic</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'pronun')">Pronunciation</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'meaning')">Meaning</button>
+            </div>
+            <div class="step-content-box">
+              <div class="tab-arabic step-arabic-text" style="font-size:1.1rem;line-height:2.2">التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ، السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ، السَّلَامُ عَلَيْنَا وَعَلَى عِبَادِ اللَّهِ الصَّالِحِينَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ</div>
+              <div class="tab-pronun step-translit" style="display:none">At-tahiyyatu lillahi was-salawatu wat-tayyibat · As-salamu 'alayka ayyuhan-nabiyyu wa rahmatullahi wa barakatuh · As-salamu 'alayna wa 'ala 'ibadil-lahis-salihin · Ashhadu an la ilaha illallahu wa ashhadu anna Muhammadan 'abduhu wa rasuluh</div>
+              <div class="tab-meaning step-meaning" style="display:none">All greetings, prayers and good things are for Allah · Peace be upon you, O Prophet, and the mercy and blessings of Allah · Peace be upon us and upon the righteous servants of Allah · I bear witness that there is no god but Allah, and that Muhammad is His servant and messenger</div>
+            </div>
+            <div class="step-note" style="margin-top:8px">Sit after the 2nd rakah and the final rakah. Raise your right index finger slightly when saying "ashhadu".</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 12: Salawat -->
+      <div class="prayer-step" onclick="toggleStep(this)">
+        <div class="step-num">12</div>
+        <div class="step-body">
+          <div style="display:flex;align-items:center">
+            <div style="flex:1"><div class="step-title">Salawat (final sitting only)</div><div class="step-arabic" style="font-size:13px">اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ…</div></div>
+            <i class="ti ti-chevron-down step-chevron"></i>
+          </div>
+          <div class="step-detail">
+            <img class="step-img" src="https://www.mymasjid.ca/wp-content/uploads/2017/03/sitting-position-in-salah.jpg" alt="Salawat">
+            <div class="step-tabs">
+              <button class="step-tab active" onclick="event.stopPropagation();showTab(this,'arabic')">Arabic</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'pronun')">Pronunciation</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'meaning')">Meaning</button>
+            </div>
+            <div class="step-content-box">
+              <div class="tab-arabic step-arabic-text" style="font-size:1.1rem;line-height:2.2">اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ</div>
+              <div class="tab-pronun step-translit" style="display:none">Allahumma salli 'ala Muhammadin wa 'ala ali Muhammad, kama sallayta 'ala Ibrahima wa 'ala ali Ibrahim, innaka Hamidun Majid</div>
+              <div class="tab-meaning step-meaning" style="display:none">O Allah, send blessings upon Muhammad and his family, as You sent blessings upon Ibrahim and his family. Indeed You are Praiseworthy and Glorious.</div>
+            </div>
+            <div class="step-note" style="margin-top:8px">Recited only in the final sitting, after Tashahhud.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 13: Tasleem -->
+      <div class="prayer-step" onclick="toggleStep(this)">
+        <div class="step-num">13</div>
+        <div class="step-body">
+          <div style="display:flex;align-items:center">
+            <div style="flex:1"><div class="step-title">Ending — Tasleem</div><div class="step-arabic">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ</div></div>
+            <i class="ti ti-chevron-down step-chevron"></i>
+          </div>
+          <div class="step-detail">
+            <img class="step-img" id="img-tasleem" src="https://www.mymasjid.ca/wp-content/uploads/2017/03/end-the-salah-with-tasleem-.jpg" alt="Tasleem">
+            <div class="step-img-dots"><button class="step-img-dot active" onclick="event.stopPropagation();swapImg('img-tasleem',this,'https://www.mymasjid.ca/wp-content/uploads/2017/03/end-the-salah-with-tasleem-.jpg')"></button><button class="step-img-dot" onclick="event.stopPropagation();swapImg('img-tasleem',this,'https://www.mymasjid.ca/wp-content/uploads/2017/03/end-the-salah-with-tasleem-2.jpg')"></button></div>
+            <div class="step-tabs">
+              <button class="step-tab active" onclick="event.stopPropagation();showTab(this,'arabic')">Arabic</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'pronun')">Pronunciation</button>
+              <button class="step-tab" onclick="event.stopPropagation();showTab(this,'meaning')">Meaning</button>
+            </div>
+            <div class="step-content-box">
+              <div class="tab-arabic step-arabic-text">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ</div>
+              <div class="tab-pronun step-translit" style="display:none">As-salamu 'alaykum wa rahmatullah</div>
+              <div class="tab-meaning step-meaning" style="display:none">Peace be upon you and the mercy of Allah</div>
+            </div>
+            <div class="step-note" style="margin-top:8px">Turn your head to the right and say it, then turn to the left and repeat. The prayer is complete. 🤲</div>
+          </div>
+        </div>
+      </div>
+
       <div style="height:16px"></div>
     </div>
   </div>
@@ -674,7 +1015,7 @@ body {
           <i class="ti ti-chevron-right card-arrow" aria-hidden="true"></i>
         </div>
       </div>
-      <div class="card">
+      <div class="card" onclick="go('wudu')">
         <div class="card-row">
           <div class="card-icon"><i class="ti ti-droplet" aria-hidden="true"></i></div>
           <div class="card-text"><div class="card-title">Wudu & tahara</div><div class="card-sub">Ritual purity, step by step</div><div class="prog-wrap"><div class="prog-fill" style="width:0%"></div></div></div>
@@ -1073,16 +1414,219 @@ body {
   </nav>
 </div>
 
+<!-- ═══════════════ WUDU SCREEN ═══════════════ -->
+<div class="screen" id="screen-wudu">
+  <div class="scroll-area">
+    <div class="arch-bg"><div class="star-field"><div class="star"></div><div class="star"></div><div class="star"></div></div></div>
+    <div class="top-bar">
+      <button class="back-btn" onclick="go('learn')" aria-label="Back"><i class="ti ti-arrow-left"></i></button>
+      <div><div class="top-bar-sub">Al-Tahara</div><div class="top-bar-title">Wudu — Purification</div></div>
+    </div>
+    <div style="padding:0 20px">
+      <div class="verse-card" style="margin-bottom:16px">
+        <div class="verse-arabic">يَا أَيُّهَا الَّذِينَ آمَنُوا إِذَا قُمْتُمْ إِلَى الصَّلَاةِ فَاغْسِلُوا وُجُوهَكُمْ</div>
+        <div class="verse-english">"O believers! When you rise for prayer, wash your faces…"</div>
+        <div class="verse-source">Surah Al-Ma'idah · 5:6</div>
+      </div>
+      <div class="sec-lbl">10 steps of wudu</div>
+
+      <div class="wudu-step">
+        <div class="wudu-num">1</div>
+        <div class="wudu-body">
+          <div class="wudu-title">Intention (Niyyah)</div>
+          <div class="wudu-arabic">نِيَّة</div>
+          <div class="wudu-desc">Make the intention in your heart to purify yourself for prayer. No need to say it aloud.</div>
+        </div>
+      </div>
+
+      <div class="wudu-step">
+        <div class="wudu-num">2</div>
+        <div class="wudu-body">
+          <div class="wudu-title">Say Bismillah</div>
+          <div class="wudu-arabic">بِسْمِ اللَّهِ</div>
+          <div class="wudu-desc">Say "Bismillah" before beginning. <em>Bismillah</em> — In the name of Allah.</div>
+        </div>
+      </div>
+
+      <div class="wudu-step">
+        <div class="wudu-num">3</div>
+        <div class="wudu-body">
+          <div class="wudu-title">Wash Hands</div>
+          <div class="wudu-desc">Wash both hands up to the wrists, making sure water reaches between the fingers.</div>
+          <div class="wudu-badge">× 3 times</div>
+        </div>
+      </div>
+
+      <div class="wudu-step">
+        <div class="wudu-num">4</div>
+        <div class="wudu-body">
+          <div class="wudu-title">Rinse Mouth</div>
+          <div class="wudu-desc">Take water into your mouth, swish it around thoroughly, and spit it out.</div>
+          <div class="wudu-badge">× 3 times</div>
+        </div>
+      </div>
+
+      <div class="wudu-step">
+        <div class="wudu-num">5</div>
+        <div class="wudu-body">
+          <div class="wudu-title">Rinse Nose</div>
+          <div class="wudu-desc">Sniff water gently into your nostrils and blow it out. Use the left hand to blow.</div>
+          <div class="wudu-badge">× 3 times</div>
+        </div>
+      </div>
+
+      <div class="wudu-step">
+        <div class="wudu-num">6</div>
+        <div class="wudu-body">
+          <div class="wudu-title">Wash Face</div>
+          <div class="wudu-desc">Wash your entire face — from hairline to chin, and from ear to ear. No dry spots.</div>
+          <div class="wudu-badge">× 3 times</div>
+        </div>
+      </div>
+
+      <div class="wudu-step">
+        <div class="wudu-num">7</div>
+        <div class="wudu-body">
+          <div class="wudu-title">Wash Arms</div>
+          <div class="wudu-desc">Wash your right arm from fingertips to elbow, then left arm. Include the elbow.</div>
+          <div class="wudu-badge">× 3 times each</div>
+        </div>
+      </div>
+
+      <div class="wudu-step">
+        <div class="wudu-num">8</div>
+        <div class="wudu-body">
+          <div class="wudu-title">Wipe Head (Masah)</div>
+          <div class="wudu-desc">Wet your hands and wipe over your head — from front to back with both hands, then back to front.</div>
+          <div class="wudu-badge">× 1 time</div>
+        </div>
+      </div>
+
+      <div class="wudu-step">
+        <div class="wudu-num">9</div>
+        <div class="wudu-body">
+          <div class="wudu-title">Wipe Ears</div>
+          <div class="wudu-desc">With the same wet hands: index fingers inside the ears, thumbs behind the earlobes.</div>
+          <div class="wudu-badge">× 1 time</div>
+        </div>
+      </div>
+
+      <div class="wudu-step">
+        <div class="wudu-num">10</div>
+        <div class="wudu-body">
+          <div class="wudu-title">Wash Feet</div>
+          <div class="wudu-desc">Wash your right foot up to the ankle, including between toes. Then the left foot.</div>
+          <div class="wudu-badge">× 3 times each</div>
+        </div>
+      </div>
+
+      <div class="verse-card" style="margin-top:16px;text-align:center">
+        <div class="verse-arabic" style="font-size:16px">اللَّهُمَّ اجْعَلْنِي مِنَ التَّوَّابِينَ وَاجْعَلْنِي مِنَ الْمُتَطَهِّرِينَ</div>
+        <div class="verse-english" style="margin-top:6px">"O Allah, make me among those who repent and among those who purify themselves."</div>
+        <div class="verse-source">Dua after Wudu</div>
+      </div>
+      <div style="height:16px"></div>
+    </div>
+  </div>
+  <nav class="bottom-nav">
+    <button class="nav-btn" onclick="go('home')"><i class="ti ti-home"></i><span>Home</span></button>
+    <button class="nav-btn" onclick="go('prayer')"><i class="ti ti-hand-stop"></i><span>Prayer</span></button>
+    <button class="nav-btn active" onclick="go('learn')"><i class="ti ti-book"></i><span>Learn</span></button>
+    <button class="nav-btn" onclick="go('events')"><i class="ti ti-calendar-event"></i><span>Events</span></button>
+    <button class="nav-btn" onclick="go('profile')"><i class="ti ti-user"></i><span>Me</span></button>
+  </nav>
+</div>
+
 </div><!-- end .phone -->
 
 <script>
 // ── NAVIGATION ──
 function go(screen) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   const target = document.getElementById('screen-' + screen);
   if (target) {
     target.classList.add('active');
     target.querySelector('.scroll-area').scrollTop = 0;
+  }
+  const navMap = { home:'home', prayer:'prayer', wudu:'learn', dhikr:'dhikr', learn:'learn', events:'events', poetry:'learn', names:'learn', journal:'profile', profile:'profile' };
+  document.querySelectorAll('.bottom-nav .nav-btn').forEach(b => {
+    if (b.getAttribute('onclick') === `go('${navMap[screen] || screen}')`) b.classList.add('active');
+  });
+}
+
+// ── STEP EXPAND/COLLAPSE ──
+function toggleStep(el) {
+  el.classList.toggle('open');
+}
+
+// ── TAB SWITCHER (inside step cards) ──
+function showTab(btn, tab) {
+  const box = btn.closest('.step-detail');
+  box.querySelectorAll('.step-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  box.querySelector('.tab-arabic').style.display  = tab === 'arabic'  ? '' : 'none';
+  box.querySelector('.tab-pronun').style.display  = tab === 'pronun'  ? '' : 'none';
+  box.querySelector('.tab-meaning').style.display = tab === 'meaning' ? '' : 'none';
+}
+
+// ── IMAGE SWITCHER ──
+function swapImg(imgId, dot, src) {
+  document.getElementById(imgId).src = src;
+  dot.closest('.step-img-dots').querySelectorAll('.step-img-dot').forEach(d => d.classList.remove('active'));
+  dot.classList.add('active');
+}
+
+// ── LIVE PRAYER TIMES ──
+async function loadPrayerTimes() {
+  const slots = {
+    Fajr:    { el: document.querySelector('.pr:nth-child(1) .pr-time'), nameEl: null },
+    Dhuhr:   { el: document.querySelector('.pr:nth-child(2) .pr-time') },
+    Asr:     { el: document.querySelector('.pr:nth-child(3) .pr-time') },
+    Maghrib: { el: document.querySelector('.pr:nth-child(4) .pr-time') },
+    Isha:    { el: document.querySelector('.pr:nth-child(5) .pr-time') },
+  };
+  try {
+    const pos = await new Promise((res, rej) =>
+      navigator.geolocation.getCurrentPosition(res, rej, { timeout: 6000 })
+    );
+    const { latitude: lat, longitude: lng } = pos.coords;
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2,'0');
+    const mm = String(today.getMonth()+1).padStart(2,'0');
+    const yyyy = today.getFullYear();
+    const url = `https://api.aladhan.com/v1/timings/${dd}-${mm}-${yyyy}?latitude=${lat}&longitude=${lng}&method=2`;
+    const data = await fetch(url).then(r => r.json());
+    const t = data.data.timings;
+    const names = ['Fajr','Dhuhr','Asr','Maghrib','Isha'];
+    const prEls = document.querySelectorAll('#screen-home .pr');
+    names.forEach((n, i) => {
+      if (prEls[i]) prEls[i].querySelector('.pr-time').textContent = t[n];
+    });
+
+    // Highlight current / next prayer
+    const now = today.getHours() * 60 + today.getMinutes();
+    const mins = names.map(n => { const [h,m] = t[n].split(':'); return +h*60+ +m; });
+    let nextIdx = mins.findIndex(m => m > now);
+    if (nextIdx === -1) nextIdx = 0;
+    prEls.forEach((el, i) => {
+      el.classList.remove('now','done');
+      if (i === nextIdx) el.classList.add('now');
+      else if (mins[i] < now) el.classList.add('done');
+    });
+
+    // Update next-prayer card
+    const nextName = names[nextIdx];
+    const nextTime = t[nextName];
+    document.querySelector('.next-name').textContent = nextName;
+    document.querySelector('.next-time').textContent = nextTime;
+    const diff = mins[nextIdx] - now;
+    const h = Math.floor(Math.abs(diff)/60), m = Math.abs(diff)%60;
+    document.querySelector('.countdown').textContent = diff > 0
+      ? `in ${h ? h+'h ' : ''}${m}min`
+      : 'now · pray soon';
+  } catch(e) {
+    // geolocation denied or failed — leave static times
   }
 }
 
@@ -1121,8 +1665,11 @@ function selectDhikr(name, meaning, target, idx) {
   document.getElementById('dhikr-target').textContent = target + ' times';
   dhikrTarget = target;
   resetDhikr();
-  document.querySelector('.scroll-area').scrollTop = 0;
+  document.getElementById('screen-dhikr').querySelector('.scroll-area').scrollTop = 0;
 }
+
+// ── INIT ──
+loadPrayerTimes();
 </script>
 </body>
 </html>
